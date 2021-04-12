@@ -163,6 +163,10 @@ pub const reg_pause      = @intToPtr(*volatile u16, 0x4000300);
 pub const bg_palette  = @intToPtr([*]volatile u16, 0x5000000);
 pub const obj_palette = @intToPtr([*]volatile u16, 0x5000200);
 
-pub const video       = @intToPtr([*]volatile u16, 0x6000000);
+/// Use this in mode3 and mode5
+pub const video16   = @intToPtr([*]volatile u16, 0x6000000);
+/// Use this in mode 4
+pub const video8    = @intToPtr([*]volatile u8, 0x6000000);
+
 //pub const oam_data    = @intToPtr([*]volatile u16,  0x6100000);
 pub const oam         = @intToPtr([*]volatile u32, 0x7000000);

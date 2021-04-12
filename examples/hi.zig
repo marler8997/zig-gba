@@ -5,6 +5,7 @@
 const gba = @import("gba");
 const mem = gba.mem;
 const gfx = gba.gfx;
+const mode3 = gba.mode3;
 
 // NOTE: I'd like to export this in header.zig but when I export it that way
 //       it says it requires the struct to be 'extern'
@@ -28,7 +29,7 @@ pub fn main() noreturn {
         while (x < gfx.width) : (x += 1) {
             var y: u8 = 0;
             while (y < gfx.height) : (y += 1) {
-                mem.video[gfx.pixelIndex(x, y)] = gfx.toRgb16(0, 0, 31);
+                mode3.video[gfx.pixelIndex(x, y)] = gfx.toRgb16(0, 0, 31);
             }
         }
     }
@@ -39,14 +40,14 @@ pub fn main() noreturn {
         while (x <= 60) : (x += 15) {
             var y: u8 = 30;
             while (y < 50) : (y += 1) {
-                mem.video[gfx.pixelIndex(x, y)] = gfx.toRgb16(31, 31, 31);
+                mode3.video[gfx.pixelIndex(x, y)] = gfx.toRgb16(31, 31, 31);
             }
         }
     }
     {
         var x: u8 = 20;
         while (x <= 35) : (x += 1) {
-            mem.video[gfx.pixelIndex(x, 40)] = gfx.toRgb16(31, 31, 31);
+            mode3.video[gfx.pixelIndex(x, 40)] = gfx.toRgb16(31, 31, 31);
         }
     }
 
