@@ -1,10 +1,13 @@
+const gfx = @import("gfx.zig");
+
 pub const reg_interupt   = @intToPtr(*volatile u32, 0x3007ffc);
 
 //
 // Internal Display Memory
 //
 pub const reg_dispcnt    = @intToPtr(*volatile u32, 0x4000000);
-pub const reg_dispcnt_l  = @intToPtr(*volatile u16, 0x4000000);
+//pub const reg_dispcnt_l  = @intToPtr(*volatile u16, 0x4000000);
+pub const reg_dispcnt_l  = @intToPtr(*volatile gfx.DisplayControl, 0x4000000);
 pub const reg_dispcnt_h  = @intToPtr(*volatile u16, 0x4000002);
 pub const reg_dispstat   = @intToPtr(*volatile u16, 0x4000004);
 pub const reg_vcount     = @intToPtr(*volatile u16, 0x4000006);
