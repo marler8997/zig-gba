@@ -13,8 +13,6 @@ comptime { _ = gba.start; }
 //       https://github.com/ziglang/zig/issues/8501
 export const _ linksection(".gbaheader") = gba.Header.init("PONG", "AFSE", "00", 0);
 
-const KEY_UP   = 0x0040;
-const KEY_DOWN = 0x0080;
 const KEY_ANY  = 0x03FF;
 
 const obj_attrs = packed struct {
@@ -74,10 +72,10 @@ pub fn main() noreturn {
     // VRAM doesn't support byte-granular writes).
     const paddle_tile_mem = @ptrCast([*] volatile u16, &tile_mem[4][1]);
     const ball_tile_mem   = @ptrCast([*] volatile u16, &tile_mem[4][5]);
-    { var i: u16 = 0; while (i < 4 * (@sizeOf(tile_4bpp) / 2)) : (i += 1) {
+    { var i: usize = 0; while (i < 4 * (@sizeOf(tile_4bpp) / 2)) : (i += 1) {
         paddle_tile_mem[i] = 0x1111; // 0b_0001_0001_0001_0001
     }}
-    { var i: u16 = 0; while (i < @sizeOf(tile_4bpp) / 2) : (i += 1) {
+    { var i: usize = 0; while (i < @sizeOf(tile_4bpp) / 2) : (i += 1) {
         ball_tile_mem[i] = 0x2222;   // 0b_0002_0002_0002_0002
     }}
 
@@ -130,7 +128,6 @@ pub fn main() noreturn {
 
         // Get current key states (REG_KEY_INPUT stores the states
         // inverted)
-        //key_states = ~REG_KEY_INPUT & KEY_ANY;
         const key_states = (~(mem.reg_p1.*)) & KEY_ANY;
 
         // Note that our physics update is tied to the framerate,
