@@ -5,14 +5,12 @@ const mem = gba.mem;
 const gfx = gba.gfx;
 const input = gba.input;
 
+// NOTE: this is required unless we find a solution for: https://github.com/ziglang/zig/issues/8508
+comptime { _ = gba.start; }
+
 // NOTE: I'd like to export this in header.zig but when I export it that way
 //       it says it requires the struct to be 'extern'
 //       https://github.com/ziglang/zig/issues/8501
-// NOTE: currently, this export is the only thing that is causing gba to get imported.  Without it
-//       gba/start.zig doesn't get imported so the main function doesn't get referenced which means
-//       nothing gets compiled.  If I move this export into header.zig I'll need to find a way to
-//       ensure that gba.start gets imported to start the "chain reaction" that will eventually
-//       cause "main" to be referenced.
 export const _ linksection(".gbaheader") = gba.Header.init("PONG", "AFSE", "00", 0);
 
 const KEY_UP   = 0x0040;

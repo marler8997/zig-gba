@@ -13,14 +13,12 @@ const input = gba.input;
 
 const ppic = @import("display/ppic.zig");
 
+// NOTE: this is required unless we find a solution for: https://github.com/ziglang/zig/issues/8508
+comptime { _ = gba.start; }
+
 // NOTE: I'd like to export this in header.zig but when I export it that way
 //       it says it requires the struct to be 'extern'
 //       https://github.com/ziglang/zig/issues/8501
-// NOTE: currently, this export is the only thing that is causing gba to get imported.  Without it
-//       gba/start.zig doesn't get imported so the main function doesn't get referenced which means
-//       nothing gets compiled.  If I move this export into header.zig I'll need to find a way to
-//       ensure that gba.start gets imported to start the "chain reaction" that will eventually
-//       cause "main" to be referenced.
 export const _ linksection(".gbaheader") = gba.Header.init("DISPLAY", "AFSE", "00", 0);
 
 fn PlotPixel(x: u8, y: u8, c: u16) void {

@@ -3,6 +3,7 @@ const bios = @import("bios.zig");
 const root = @import("root");
 
 comptime {
+    _ = @import("header.zig"); // This forces header.zig to be imported
     if (!@hasDecl(root, "_start")) {
         @export(_start, .{ .name = "_start", .section = ".gbamain" });
     }

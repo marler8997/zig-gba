@@ -8,9 +8,3 @@ pub const ops = @import("gba/ops.zig");
 pub const input = @import("gba/input.zig");
 pub const bios = @import("gba/bios.zig");
 pub const start = @import("gba/start.zig");
-
-// This forces header.zig and start.zig to be imported
-comptime {
-    _ = header;
-    _ = start;
-}
