@@ -1,9 +1,14 @@
 //! Example ported from: https://www.reinterpretcast.com/writing-a-game-boy-advance-game
+//!
+//! Issues Fixed
+//! 1. Use a vblank interrupt instead of polling
+//!
 const std = @import("std");
 const gba = @import("gba");
 const mem = gba.mem;
 const gfx = gba.gfx;
 const input = gba.input;
+const interrupt = gba.interrupt;
 
 // NOTE: this is required unless we find a solution for: https://github.com/ziglang/zig/issues/8508
 comptime { _ = gba.start; }
@@ -62,6 +67,8 @@ fn addSignedClamp(comptime T: type, val: T, add: SignedInt(@typeInfo(T).Int.bits
 }
 
 pub fn main() noreturn {
+    
+
     // Write the tiles for our sprites into the fourth tile block in VRAM.
     // Four tiles for an 8x32 paddle sprite, and one tile for an 8x8 ball
     // sprite. Using 4bpp, 0x1111 is four pixels of colour index 1, and
@@ -119,6 +126,12 @@ pub fn main() noreturn {
         .objectLayer = .show,
     };
     
+    interrupt.init();
+    mem.reg_dispstat.* = gfx.DisplayStatus { .vblank_irq = .enabled };
+    mem.reg_ie.* |= interrupt.vblank;
+    // NOTE: comment this out to disable interrupt handling for now
+    //mem.reg_ime.* = 1;
+
     // The main game loop
     while (true) {
         // Skip past the rest of any current V-Blank, then skip past
@@ -126,6 +139,8 @@ pub fn main() noreturn {
         // NOTE: this is a bad way to handle vsync, use the vblank interrupt instead
         while (mem.reg_vcount.* >= 160) { }
         while (mem.reg_vcount.* < 160) { }
+
+        //asm volatile("swi 0x05"); // wait for vblank
 
         // Get current key states (REG_KEY_INPUT stores the states
         // inverted)

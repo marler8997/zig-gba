@@ -1,3 +1,4 @@
+pub const interrupt = @import("gba/interrupt.zig");
 pub const mem = @import("gba/mem.zig");
 pub const gfx = @import("gba/gfx.zig");
 pub const mode3 = @import("gba/mode3.zig");

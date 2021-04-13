@@ -39,6 +39,22 @@ pub const DisplayControl = packed struct {
     showObjWindow: Visiblity = .hide,
 };
 
+pub const Enabled =  enum(u1) {
+    disabled,
+    enabled,
+};
+
+pub const DisplayStatus = packed struct {
+    in_vblank: bool = false,
+    in_hblank: bool = false,
+    in_vcount: bool = false,
+    vblank_irq: Enabled = .disabled,
+    hblank_irq: Enabled = .disabled,
+    vcount_irg: Enabled = .disabled,
+    unused0: bool = false,
+    unused1: bool = false,
+};
+
 pub fn toRgb16(red: u5, green: u5, blue: u5) u16 {
     return @as(u16, red) | (@as(u16, green) << 5) | (@as(u16, blue) << 10);
 }

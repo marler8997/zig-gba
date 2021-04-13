@@ -8,6 +8,7 @@ pub fn build(b: *Builder) void {
     _ = addGbaExe(b, mode, "hi");
     _ = addGbaExe(b, mode, "display");
     _ = addGbaExe(b, mode, "pong");
+    _ = addGbaExe(b, mode, "pongbetter");
 }
 
 fn addGbaExe(b: *Builder, mode: std.builtin.Mode, comptime name: []const u8) *std.build.LibExeObjStep {

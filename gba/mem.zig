@@ -1,6 +1,8 @@
+const interrupt = @import("interrupt.zig");
 const gfx = @import("gfx.zig");
 
-pub const reg_interupt   = @intToPtr(*volatile u32, 0x3007ffc);
+pub const reg_ifbios     = @intToPtr(*volatile u16, 0x3007ff8);
+pub const reg_interrupt  = @intToPtr(*volatile fn() callconv(.Naked) void, 0x3007ffc);
 
 //
 // Internal Display Memory
@@ -9,7 +11,7 @@ pub const reg_dispcnt    = @intToPtr(*volatile u32, 0x4000000);
 //pub const reg_dispcnt_l  = @intToPtr(*volatile u16, 0x4000000);
 pub const reg_dispcnt_l  = @intToPtr(*volatile gfx.DisplayControl, 0x4000000);
 pub const reg_dispcnt_h  = @intToPtr(*volatile u16, 0x4000002);
-pub const reg_dispstat   = @intToPtr(*volatile u16, 0x4000004);
+pub const reg_dispstat   = @intToPtr(*volatile gfx.DisplayStatus, 0x4000004);
 pub const reg_vcount     = @intToPtr(*volatile u16, 0x4000006);
 pub const reg_bg0cnt     = @intToPtr(*volatile u16, 0x4000008);
 pub const reg_bg1cnt     = @intToPtr(*volatile u16, 0x400000a);
